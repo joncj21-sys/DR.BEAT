@@ -5,11 +5,13 @@ app = Flask(__name__)
 peliculas = [
     {
         "titulo": "Acción Extrema",
-        "url": "https://www.youtube.com/watch?v=DFs7Vnautps"
+        "url": "https://www.youtube.com/watch?v=DFs7Vnautps",
+        "categoria": "Acción"
     },
     {
         "titulo": "Comedia Divertida",
-        "url": "https://www.w3schools.com/html/movie.mp4"
+        "url": "https://www.w3schools.com/html/movie.mp4",
+        "categoria": "Comedia"
     }
 ]
 
