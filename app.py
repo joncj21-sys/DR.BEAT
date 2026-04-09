@@ -5,18 +5,24 @@ from flask_sqlalchemy import SQLAlchemy
 app = Flask(__name__)
 app.secret_key = "cambia_esto_en_produccion"
 
+# =========================
 # BASE DE DATOS
+# =========================
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///users.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
 
+# =========================
 # LOGIN MANAGER
+# =========================
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "login"
 
+# =========================
 # MODELO USUARIO
+# =========================
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), unique=True, nullable=False)
@@ -26,22 +32,30 @@ class User(UserMixin, db.Model):
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-# CREAR BASE DE DATOS
+# =========================
+# CREAR TABLAS (RENDER SAFE)
+# =========================
 with app.app_context():
     db.create_all()
 
+# =========================
 # PELÍCULAS
+# =========================
 peliculas = [
     {"titulo": "Acción Extrema", "url": "https://www.w3schools.com/html/movie.mp4"},
-    {"titulo": "Comedia Divertida", "url": "https://www.w3schools.com/html/movie.mp4"}
+    {"titulo": "Comedia Divertida", "url": "https://www.w3schools.com/html/movie.mp4"},
 ]
 
-# HOME (SIN ERROR)
+# =========================
+# HOME
+# =========================
 @app.route("/")
 def inicio():
     return render_template("index.html", peliculas=peliculas, user=current_user)
 
+# =========================
 # LOGIN
+# =========================
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
@@ -58,7 +72,9 @@ def login():
 
     return render_template("login.html")
 
+# =========================
 # REGISTRO
+# =========================
 @app.route("/registro", methods=["GET", "POST"])
 def registro():
     if request.method == "POST":
@@ -69,21 +85,25 @@ def registro():
         if existe:
             return "⚠️ Ese usuario ya existe"
 
-        nuevo_usuario = User(username=username, password=password)
-        db.session.add(nuevo_usuario)
+        nuevo = User(username=username, password=password)
+        db.session.add(nuevo)
         db.session.commit()
 
         return redirect(url_for("login"))
 
     return render_template("registro.html")
 
+# =========================
 # LOGOUT
+# =========================
 @app.route("/logout")
 @login_required
 def logout():
     logout_user()
     return redirect(url_for("login"))
 
-# RUN LOCAL (Render usa gunicorn)
+# =========================
+# RUN LOCAL
+# =========================
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=10000)
