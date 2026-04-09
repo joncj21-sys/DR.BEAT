@@ -10,11 +10,8 @@ peliculas = [
     {
         "titulo": "Comedia Divertida",
         "url": "https://www.w3schools.com/html/movie.mp4"
-    },
-    {
-        "titulo": "Extrem",
-        "url": "/static/videos/0408(1).mp4"
     }
+    
 ]
 
 @app.route("/")
