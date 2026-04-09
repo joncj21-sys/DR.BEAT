@@ -1,31 +1,45 @@
 body {
-    background: black;
+    background: #141414;
     color: white;
-    font-family: Arial;
-    text-align: center;
+    font-family: Arial, sans-serif;
+    margin: 0;
 }
 
-.titulo {
-    font-size: 40px;
-    margin: 20px;
-    color: cyan;
+.logo {
+    padding: 20px;
+    font-size: 30px;
+    color: red;
 }
 
-.contenedor {
-    display: flex;
-    justify-content: center;
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 20px;
-    flex-wrap: wrap;
+    padding: 20px;
 }
 
 .card {
-    background: #111;
-    padding: 15px;
+    background: #222;
+    padding: 10px;
     border-radius: 10px;
-    width: 300px;
+    transition: transform 0.3s;
+}
+
+.card:hover {
+    transform: scale(1.05);
 }
 
 video {
     width: 100%;
     border-radius: 10px;
+}
+
+.btn {
+    display: block;
+    text-align: center;
+    background: red;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    text-decoration: none;
 }
