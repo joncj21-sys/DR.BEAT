@@ -11,14 +11,11 @@ peliculas = [
         "titulo": "Comedia Divertida",
         "url": "https://www.w3schools.com/html/movie.mp4"
     }
-    
 ]
 
 @app.route("/")
 def inicio():
     return render_template("index.html", peliculas=peliculas)
 
-# IMPORTANTE PARA RENDER
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=10000)
-
