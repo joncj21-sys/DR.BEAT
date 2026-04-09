@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
+    <meta charset="UTF-8">
     <title>Mi Streaming</title>
     <link rel="stylesheet" href="/static/style.css">
     <link rel="icon" href="/static/favicon.ico">
@@ -11,14 +12,25 @@
 <h1 class="titulo">🎬 DR. BEAT STREAM</h1>
 
 <div class="contenedor">
+
     {% for p in peliculas %}
         <div class="card">
             <h2>{{ p.titulo }}</h2>
-            <video controls>
-                <source src="{{ p.url }}" type="video/mp4">
-            </video>
+
+            {% if "youtube.com" in p.url %}
+                <a href="{{ p.url }}" target="_blank">
+                    ▶ Ver en YouTube
+                </a>
+            {% else %}
+                <video controls width="100%">
+                    <source src="{{ p.url }}" type="video/mp4">
+                    Tu navegador no soporta video.
+                </video>
+            {% endif %}
+
         </div>
     {% endfor %}
+
 </div>
 
 </body>
