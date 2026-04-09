@@ -5,7 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 app = Flask(__name__)
 app.secret_key = "secret123"
 
-# Base de datos (archivo local)
+# Base de datos
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///users.db"
 db = SQLAlchemy(app)
 
@@ -32,7 +32,7 @@ peliculas = [
     {"titulo": "Acción Extrema", "url": "https://www.w3schools.com/html/movie.mp4"}
 ]
 
-# HOME (PROTEGIDO)
+# HOME
 @app.route("/")
 @login_required
 def inicio():
@@ -50,12 +50,17 @@ def login():
 
     return render_template("login.html")
 
-# REGISTRO
+# REGISTRO (CORREGIDO)
 @app.route("/registro", methods=["GET", "POST"])
 def registro():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
+
+        # 🔥 evitar duplicados
+        existe = User.query.filter_by(username=username).first()
+        if existe:
+            return "⚠️ Usuario ya existe"
 
         nuevo = User(username=username, password=password)
         db.session.add(nuevo)
@@ -71,6 +76,3 @@ def registro():
 def logout():
     logout_user()
     return redirect(url_for("login"))
-
-if __name__ == "__main__":
-    app.run()
