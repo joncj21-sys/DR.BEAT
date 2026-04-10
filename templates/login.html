@@ -1,18 +1,11 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Login</title>
-</head>
-<body style="background:black; color:white; text-align:center;">
-
-<h1>🔐 Login DR.BEAT</h1>
+<h2>🔐 Login DR.BEAT</h2>
 
 <form method="POST">
-    <input type="text" name="username" placeholder="Usuario" required><br><br>
-    <input type="password" name="password" placeholder="Contraseña" required><br><br>
+    <input name="username" placeholder="Usuario"><br><br>
+    <input name="password" type="password" placeholder="Contraseña"><br><br>
     <button type="submit">Entrar</button>
 </form>
 
-</body>
-</html>
+<p style="color:red;">{{ error }}</p>
+
+<a href="/registro">Crear cuenta</a>
