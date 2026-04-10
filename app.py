@@ -39,6 +39,15 @@ def load_user(user_id):
 with app.app_context():
     db.create_all()
 
+    # 👇 USUARIO POR DEFECTO (IMPORTANTE)
+    if not User.query.filter_by(username="admin").first():
+        admin = User(
+            username="admin",
+            password=generate_password_hash("1234")
+        )
+        db.session.add(admin)
+        db.session.commit()
+
 # =========================
 # PELÍCULAS
 # =========================
@@ -70,7 +79,7 @@ def login():
             login_user(user)
             return redirect(url_for("inicio"))
 
-        return "❌ Usuario o contraseña incorrectos"
+        return render_template("login.html", error="❌ Usuario o contraseña incorrectos")
 
     return render_template("login.html")
 
@@ -90,9 +99,11 @@ def registro():
         if existe:
             return "⚠️ Ese usuario ya existe"
 
-        password_hash = generate_password_hash(password)
+        nuevo = User(
+            username=username,
+            password=generate_password_hash(password)
+        )
 
-        nuevo = User(username=username, password=password_hash)
         db.session.add(nuevo)
         db.session.commit()
 
@@ -113,4 +124,4 @@ def logout():
 # RUN
 # =========================
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=10000, debug=True)
+    app.run(debug=True)
