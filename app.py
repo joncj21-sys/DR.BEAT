@@ -1,6 +1,7 @@
 from flask import Flask, render_template, redirect, url_for, request
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 app.secret_key = "cambia_esto_en_produccion"
@@ -26,14 +27,14 @@ login_manager.login_view = "login"
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), unique=True, nullable=False)
-    password = db.Column(db.String(100), nullable=False)
+    password = db.Column(db.String(200), nullable=False)
 
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
 
 # =========================
-# CREAR TABLAS (RENDER SAFE)
+# CREAR TABLAS
 # =========================
 with app.app_context():
     db.create_all()
@@ -50,6 +51,7 @@ peliculas = [
 # HOME
 # =========================
 @app.route("/")
+@login_required
 def inicio():
     return render_template("index.html", peliculas=peliculas, user=current_user)
 
@@ -64,7 +66,7 @@ def login():
 
         user = User.query.filter_by(username=username).first()
 
-        if user and user.password == password:
+        if user and check_password_hash(user.password, password):
             login_user(user)
             return redirect(url_for("inicio"))
 
@@ -81,11 +83,16 @@ def registro():
         username = request.form["username"]
         password = request.form["password"]
 
+        if not username or not password:
+            return "⚠️ Llena todos los campos"
+
         existe = User.query.filter_by(username=username).first()
         if existe:
             return "⚠️ Ese usuario ya existe"
 
-        nuevo = User(username=username, password=password)
+        password_hash = generate_password_hash(password)
+
+        nuevo = User(username=username, password=password_hash)
         db.session.add(nuevo)
         db.session.commit()
 
@@ -103,7 +110,7 @@ def logout():
     return redirect(url_for("login"))
 
 # =========================
-# RUN LOCAL
+# RUN
 # =========================
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=10000)
+    app.run(host="0.0.0.0", port=10000, debug=True)
