@@ -1,34 +1,14 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>DR.BEAT 🎬</title>
-    <link rel="stylesheet" href="/static/style.css">
-    <a href="/logout">Cerrar sesión</a>
-</head>
+<h1>🎬 DR.BEAT STREAM</h1>
 
-<body>
+<p>Bienvenido {{ user.username }}</p>
 
-<h1 class="logo">🎬 DR.BEAT</h1>
+<a href="/logout">Cerrar sesión</a>
 
-<div class="grid">
+<hr>
 
-    {% for p in peliculas %}
-    <div class="card">
-        <h3>{{ p.titulo }}</h3>
-
-        {% if "youtube.com" in p.url %}
-            <a href="{{ p.url }}" target="_blank" class="btn">▶ Ver</a>
-        {% else %}
-            <video controls>
-                <source src="{{ p.url }}" type="video/mp4">
-            </video>
-        {% endif %}
-
-    </div>
-    {% endfor %}
-
-</div>
-
-</body>
-</html>
+{% for p in peliculas %}
+    <h3>{{ p.titulo }}</h3>
+    <video width="300" controls>
+        <source src="{{ p.url }}" type="video/mp4">
+    </video>
+{% endfor %}
