@@ -1,22 +1,16 @@
- <h1>👑 PANEL ADMIN DR.BEAT</h1>
+<h3>Subir video</h3>
 
-<a href="/">Home</a> | <a href="/logout">Salir</a>
+<form action="/upload" method="POST" enctype="multipart/form-data">
+  <input type="file" name="video" required>
+  <button type="submit">Subir</button>
+</form>
 
 <hr>
 
-<h3>Usuarios registrados:</h3>
-<video controls width="400">
-    <source src="{{ url_for('static', filename='videos/BADBUNNY.mp4') }}" type="video/mp4">
-</video>
+<h3>Videos:</h3>
 
-<ul>
-{% for u in users %}
-    <li>
-        {{ u.username }} - {{ u.role }}
-
-        {% if u.username != "admin" %}
-        <a href="/delete_user/{{ u.id }}">🗑 Eliminar</a>
-        {% endif %}
-    </li>
+{% for video in videos %}
+  <video width="300" controls>
+    <source src="{{ url_for('static', filename='videos/' + video) }}">
+  </video>
 {% endfor %}
-</ul>
