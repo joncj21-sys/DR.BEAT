@@ -1,7 +1,18 @@
 from flask import Flask, render_template, redirect, url_for, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+import os
+from flask import Flask, render_template, request, redirect, url_for
+from werkzeug.utils import secure_filename
 
+app = Flask(__name__)
+
+# carpeta donde se guardan videos
+UPLOAD_FOLDER = 'static/videos'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+# tipos permitidos
+ALLOWED_EXTENSIONS = {'mp4', 'webm', 'ogg'}
 app = Flask(__name__)
 app.secret_key = "secreto123"
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///users.db"
